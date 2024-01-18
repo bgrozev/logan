@@ -9,6 +9,7 @@ const USE_REGEXP = false; // this is very slow. maybe set dynamically based on t
 const IGNORE_CASE = true;
 const START = false; // epoch ts in ms, e.g. 1705256400000
 const END = false; // START + 1800 * 1000
+const RESOLUTION = 1; // seconds
 
 // format the timestamp in the output
 const FORMATTER = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'UTC' });
@@ -65,7 +66,7 @@ function extractTime(line) {
     }
 
     // 1 second resolution
-    return d.getTime() - d.getTime() % 1000;
+    return d.getTime() - d.getTime() % (1000 * RESOLUTION);
 }
 
 function processLine(line) {
