@@ -36,7 +36,7 @@ for (let i = 2; i < process.argv.length; i++) {
   if (a == "--") {
     filesEnded = true;
   } else if (filesEnded) {
-    patterns.push({ name: a, pattern: new RegExp(`.*${a}.*`, IGNORE_CASE ? "i" : "") });
+    patterns.push({ name: IGNORE_CASE ? a.toLowerCase() : a, pattern: new RegExp(`.*${a}.*`, IGNORE_CASE ? "i" : "") });
   } else {
     logfiles.push(a);
   }
