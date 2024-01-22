@@ -51,6 +51,7 @@ if (!patterns.length) {
   usage();
 }
 
+const NGINX_PATTERN = /\d+\.\d+\.X\.X /;
 function extractTime(line) {
     // Ignore subsequent lines from multi-line logs (which may otherwise contain a timestamp)
     if (/^\s/.test(line)) return;
@@ -60,6 +61,10 @@ function extractTime(line) {
     let d;
     if (line.startsWith("Jicofo")) {
       d = new Date(`${s[1]} ${s[2]}Z`);
+    } else if (NGINX_PATTERN.test(line)) {
+      if (s.length < 4) return;
+      // 10.123.X.X - - [22/Jan/2024:21:12:49 +0000] GET /
+      d = new Date(s[3].replaceAll('[', '').replace(':', ' ') + 'Z');
     } else {
       // prosody log format, year is missing
       d = new Date(`${s[0]} ${s[1]} ${new Date().getFullYear()} ${s[2]}Z`);
